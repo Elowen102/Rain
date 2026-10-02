@@ -1,54 +1,37 @@
-# Rain
+# Rain — full-stack backend template
 
-A Spring Boot starter project (Maven + Gradle) — minimal Java backend with a HelloWorld REST endpoint.
+This project is now extended into a more complete Java Spring Boot backend template with:
 
-项目包含：
+- JPA (MySQL/Postgres/H2)
+- Layered REST structure (controller → service → repository)
+- Spring Security (HTTP Basic + BCrypt)
+- Dockerfile + docker-compose templates for MySQL and Postgres
 
-- Maven (pom.xml)
-- Gradle (build.gradle)
-- src/main/java/com/example/rain/RainApplication.java (Spring Boot 主类)
-- src/main/java/com/example/rain/HelloController.java (示例 REST 接口)
-
-快速开始（Maven）：
+Quick run (H2, default):
 
 ```bash
-# 使用 Maven
-./mvnw clean package
-./mvnw spring-boot:run
-# 或
-mvn clean package
 mvn spring-boot:run
+# register a user
+curl -X POST http://localhost:8080/auth/register -H "Content-Type: application/json" -d '{"username":"alice","password":"pass"}'
+# call protected endpoint
+curl -u alice:pass http://localhost:8080/api/users
 ```
 
-快速开始（Gradle）：
+Using MySQL with docker-compose:
 
 ```bash
-# 使用 Gradle
-./gradlew bootRun
-# 或
-./gradlew build
-java -jar build/libs/rain-0.0.1-SNAPSHOT.jar
+docker compose -f docker-compose-mysql.yml up --build
+# the app will connect to the mysql container
 ```
 
-访问示例接口：
-
-GET http://localhost:8080/hello
-
-Git 本地推送示例：
+Using Postgres with docker-compose:
 
 ```bash
-# 在本地项目目录中
-git init
-git add .
-git commit -m "Initial Spring Boot project"
-git branch -M main
-git remote add origin https://github.com/Elowen102/Rain.git
-git push -u origin main
+docker compose -f docker-compose-postgres.yml up --build
 ```
 
-如果你要我：
-- 添加 Dockerfile
-- 配置 GitHub Actions CI
-- 切换为 Kotlin / 使用 Spring WebFlux
-
-告诉我你想继续的方向。
+Notes / next steps:
+- Add JWT support if you want stateless authentication for APIs.
+- Add role-based authorization (method security annotations are enabled).
+- Add database migrations (Flyway/Liquibase) for production-ready schema management.
+- Add CI / GitHub Actions and Docker image publishing if desired.
